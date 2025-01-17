@@ -8,9 +8,7 @@
   },
   "private": true,
   "dependencies": {
-    "bootstrap-icons": "^1.11.3",
     "fs": "^0.0.1-security",
-    "rs": "^0.0.1",
     "sql.js": "^1.12.0"
   }
 }

@@ -27,6 +27,7 @@ body {
     overflow: hidden;
     transition: all 0.5s ease-in;
     z-index: 1;
+    margin-left: 0.5rem;
 }
 
 .navbar button::before, button::after {
@@ -70,10 +71,23 @@ body {
     background-color: #e8e8e8;
     border-bottom: 1px solid #e3e7f1;
     padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar .nav-buttons {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
 }
 
 .navbar a, a:visited, a:active, a:hover, a:link:active {
     text-decoration: none;
+}
+
+.navbar img {
+    margin-right: 1rem;
 }
 
 .navbar .navbar-brand {

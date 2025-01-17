@@ -24,5 +24,5 @@ $ npm start
 - [x] Database connection
 - [ ] Frontend
 - [ ] Filtering dishes by category
-- [ ] Adding new dishes
+- [X] Adding new dishes
 - [ ] Booking system

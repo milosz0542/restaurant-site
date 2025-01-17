@@ -7,14 +7,69 @@
 </head>
 <body>
     <div class="navbar">
-        <button class="nav-button"><span><a href="index.html">Strona główna</a></span></button>
-        <button class="nav-button"><span><a href="menu.html">Menu</a></span></button>
-        <button class="nav-button"><span><a href="contact.html">Kontakt</a></span></button>
+        <img src="LOGO-UNIWROC.png" width="125px" height="55px">
+        <div class="nav-buttons">
+            <button class="nav-button"><span><a href="index.html">Strona główna</a></span></button>
+            <button class="nav-button"><span><a href="menu.html">Menu</a></span></button>
+            <button class="nav-button"><span><a href="contact.html">Kontakt</a></span></button>
+        </div>
     </div>
     <div class="container">
         <div class="content">
-
+            <h1>Uni-stauracja - rezerwacja</h1>
+            <div class="reservation">
+                <h1>Zarezerwuj stolik</h1>
+                <form id="reservation-form">
+                    <label for="name">Imię i nazwisko:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="phone">Telefon:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <label for="date">Data:</label>
+                    <input type="date" id="date" name="date" required>
+                    <label for="time">Godzina:</label>
+                    <input type="time" id="time" name="time" required>
+                    <label for="people">Liczba osób:</label>
+                    <input type="number" id="people" name="people" required>
+                    <button type="submit">Zarezerwuj</button>
+                </form>
+            </div>
         </div>
     </div>
+
+    <div class="footer">
+        <p>Uni-stauracja &copy; 2025</p>
+    </div>
+
+    <script>
+        const reservationForm = document.getElementById("reservation-form");
+
+        reservationForm.addEventListener("submit", event => {
+            event.preventDefault();
+
+            const formData = new FormData(reservationForm);
+            const reservation = Object.fromEntries(formData);
+
+            fetch("/reservations", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(reservation)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Rezerwacja zapisana!");
+                        reservationForm.reset();
+                    } else {
+                        alert("Błąd zapisu rezerwacji.");
+                    }
+                })
+                .catch(error => {
+                    alert("Błąd zapisu rezerwacji.");
+                });
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Uni-stauracja - Admin</title>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="header">
+                <h1>Uni-stauracja - Admin</h1>
+                <p>Panel administracyjny</p>
+            </div>
+            <div id="admin">
+                <form id="add-dish-form">
+                    <h2>Dodaj danie</h2>
+                    <label for="name">Nazwa:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="price">Cena:</label>
+                    <input type="number" id="price" name="price" required>
+                    <label for="description">Opis (składniki):</label>
+                    <textarea id="description" name="description" required></textarea>
+                    <label for="category">Kategoria:</label>
+                    <select id="category" name="category" required>
+                        <option value="meat">Mięsne</option>
+                        <option value="vegan">Wegańskie</option>
+                        <option value="vegetarian">Wegetariańskie</option>
+                    </select>
+                    <button type="submit">Dodaj</button>
+                </form>
+                <div id="dishes">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch dishes data from the server
+        fetch("/dishes")
+            .then(response => response.json())
+            .then(dishes => {
+                const dishesDiv = document.getElementById("dishes");
+                dishesDiv.innerHTML = ""; // Clear loading text
+
+                if (dishes.length === 0) {
+                    dishesDiv.textContent = "No dishes available.";
+                    return;
+                }
+
+                dishes.forEach(dish => {
+                    const dishDiv = document.createElement("div");
+                    dishDiv.classList.add("dish");
+                    dishDiv.innerHTML = `
+                        <div class="dish-header">
+                            <h3>${dish.name}</h3>
+                            <p class="price">${dish.price} PLN</p>
+                        </div>
+                        <p class="description">${dish.description}</p>
+                        <p class="category">${dish.category}</p>
+                    `;
+                    dishesDiv.appendChild(dishDiv);
+                });
+            })
+            .catch(error => {
+                document.getElementById("dishes").textContent = "Error loading dishes.";
+            });
+
+        // Add dish form
+        document.getElementById("add-dish-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const price = document.getElementById("price").value;
+            const description = document.getElementById("description").value;
+            const category = document.getElementById("category").value;
+
+            fetch("/dishes", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name, price, description, category })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        throw new Error("Error adding dish.");
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("dishes").textContent = error.message;
+                });
+        });
+    </script>
+</body>
+</html>
