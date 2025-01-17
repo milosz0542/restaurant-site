@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Uni-stauracja - menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navbar">
+        <button class="nav-button"><span><a href="index.html">Strona główna</a></span></button>
+        <button class="nav-button"><span><a href="menu.html">Menu</a></span></button>
+        <button class="nav-button"><span><a href="contact.html">Kontakt</a></span></button>
+    </div>
+    <div class="container">
+        <div class="content">
+            <div class="header">
+                <h1>Uni-stauracja - menu</h1>
+                <p>Wybierz coś dla siebie</p>
+            </div>
+            <div id="menu">
+
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Uni-stauracja &copy; 2025</p>
+    </div>
+
+    <script>
+        // Fetch dishes data from the server
+        fetch("/dishes")
+            .then(response => response.json())
+            .then(dishes => {
+                const menuDiv = document.getElementById("menu");
+                menuDiv.innerHTML = ""; // Clear loading text
+
+                if (dishes.length === 0) {
+                    menuDiv.textContent = "No dishes available.";
+                    return;
+                }
+
+                dishes.forEach(dish => {
+                    const dishDiv = document.createElement("div");
+                    dishDiv.classList.add("dish");
+                    dishDiv.innerHTML = `
+                        <div class="dish-header">
+                            <h3>${dish.name}</h3>
+                            <p class="price">${dish.price} PLN</p>
+                        </div>
+                        <p class="description">${dish.description}</p>
+                        <p class="category">${dish.category}</p>
+                    `;
+                    menuDiv.appendChild(dishDiv);
+                });
+            })
+            .catch(error => {
+                document.getElementById("menu").textContent = "Error loading menu.";
+                console.error("Error fetching dishes:", error);
+            });
+    </script>
+</body>
+</html>
