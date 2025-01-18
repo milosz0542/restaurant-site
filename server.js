@@ -82,6 +82,10 @@ initSqlJs().then(SQL => {
             const img = fs.readFileSync("./static/img/LOGO-UNIWROC.png");
             res.writeHead(200, { "Content-Type": "image/png" });
             res.end(img);
+        } else if (req.url === "/PizzaBG.png" && req.method === "GET") {
+            const img = fs.readFileSync("./static/img/PizzaBG.png");
+            res.writeHead(200, { "Content-Type": "image/png" });
+            res.end(img);
         }
         else {
             const html = fs.readFileSync("./static/404.html", "utf8");

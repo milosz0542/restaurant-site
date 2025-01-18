@@ -20,6 +20,15 @@
                 <h1>Uni-stauracja - menu</h1>
                 <p>Wybierz coś dla siebie</p>
             </div>
+            <div class="filter">
+                <label for="category">Filter by category:</label>
+                <select id="category" onchange="filterDishes()">
+                    <option value="all">All</option>
+                    <option value="Meat">Meat</option>
+                    <option value="Vegan">Vegan</option>
+                    <option value="Vegetarian">Vegetarian</option>
+                </select>
+            </div>
             <div id="menu">
 
             </div>
@@ -30,36 +39,53 @@
     </div>
 
     <script>
+        let allDishes = [];
+
         // Fetch dishes data from the server
         fetch("/dishes")
             .then(response => response.json())
             .then(dishes => {
-                const menuDiv = document.getElementById("menu");
-                menuDiv.innerHTML = ""; // Clear loading text
-
-                if (dishes.length === 0) {
-                    menuDiv.textContent = "No dishes available.";
-                    return;
-                }
-
-                dishes.forEach(dish => {
-                    const dishDiv = document.createElement("div");
-                    dishDiv.classList.add("dish");
-                    dishDiv.innerHTML = `
-                        <div class="dish-header">
-                            <h3>${dish.name}</h3>
-                            <p class="price">${dish.price} PLN</p>
-                        </div>
-                        <p class="description">${dish.description}</p>
-                        <p class="category">${dish.category}</p>
-                    `;
-                    menuDiv.appendChild(dishDiv);
-                });
+                allDishes = dishes;
+                displayDishes(dishes);
             })
             .catch(error => {
                 document.getElementById("menu").textContent = "Error loading menu.";
                 console.error("Error fetching dishes:", error);
             });
+
+        function displayDishes(dishes) {
+            const menuDiv = document.getElementById("menu");
+            menuDiv.innerHTML = ""; // Clear previous dishes
+
+            if (dishes.length === 0) {
+                menuDiv.textContent = "No dishes available.";
+                return;
+            }
+
+            dishes.forEach(dish => {
+                const dishDiv = document.createElement("div");
+                dishDiv.classList.add("dish");
+                dishDiv.innerHTML = `
+                <div class="dish-header">
+                    <h3>${dish.name}</h3>
+                    <p class="price">${dish.price} PLN</p>
+                </div>
+                <p class="description">${dish.description}</p>
+                <p class="category">${dish.category}</p>
+            `;
+                menuDiv.appendChild(dishDiv);
+            });
+        }
+
+        function filterDishes() {
+            const selectedCategory = document.getElementById("category").value;
+            if (selectedCategory === "all") {
+                displayDishes(allDishes);
+            } else {
+                const filteredDishes = allDishes.filter(dish => dish.category === selectedCategory);
+                displayDishes(filteredDishes);
+            }
+        }
     </script>
 </body>
 </html>

@@ -3,7 +3,8 @@ Restaurant site is project for PAI classes at University of Wrocław.
 
 ## Technologies
 node.js - as basic API holder. <br>
-sql.js - for database connection.
+sql.js - for database connection. <br>
+sqlite - as database.
 
 ## Setup
 To run this project, install it locally using npm:
@@ -23,6 +24,6 @@ $ npm start
 - [x] Basic API
 - [x] Database connection
 - [ ] Frontend
-- [ ] Filtering dishes by category
+- [X] Filtering dishes by category
 - [X] Adding new dishes
 - [ ] Booking system
