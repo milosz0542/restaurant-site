@@ -3,7 +3,7 @@ const initSqlJs = require("sql.js");
 const http = require("http");
 
 // Load the SQL file
-const fileBuffer = fs.readFileSync("menu_db");
+const fileBuffer = fs.readFileSync("restaurant_db");
 
 // Initialize the SQL.js library
 initSqlJs().then(SQL => {
@@ -33,8 +33,43 @@ initSqlJs().then(SQL => {
         db.run(query);
         const data = db.export();
         const buffer = Buffer.from(data);
-        fs.writeFileSync("menu_db", buffer);
+        fs.writeFileSync("restaurant_db", buffer);
     }
+
+    function getReservations() {
+        const query = "SELECT * FROM Reservations";
+        const results = db.exec(query);
+
+        if (results.length === 0) return [];
+
+        const columns = results[0].columns;
+        const values = results[0].values;
+
+        return values.map(row => {
+            const obj = {};
+            columns.forEach((col, index) => {
+                obj[col] = row[index];
+            });
+            return obj;
+        });
+    }
+
+    function addReservations(reservation) {
+        const query = `INSERT INTO Reservations (Name, Email, PhoneNumber, ReservationDate, ReservationHour, NumberOfPeople) VALUES ('${reservation.name}', '${reservation.email}', '${reservation.phone}', '${reservation.date}', '${reservation.time}', ${reservation.guests})`;
+        db.run(query);
+        const data = db.export();
+        const buffer = Buffer.from(data);
+        fs.writeFileSync("restaurant_db", buffer);
+    }
+
+    function confirmReservation(reservationId) {
+        const query = `UPDATE Reservations SET Confirmed = 1 WHERE id = ${reservationId}`;
+        db.run(query);
+        const data = db.export();
+        const buffer = Buffer.from(data);
+        fs.writeFileSync("restaurant_db", buffer);
+    }
+
 
     // Create an HTTP server
     http.createServer((req, res) => {
@@ -86,6 +121,31 @@ initSqlJs().then(SQL => {
             const img = fs.readFileSync("./static/img/PizzaBG.png");
             res.writeHead(200, { "Content-Type": "image/png" });
             res.end(img);
+        } else if (req.url === "/reservations" && req.method === "POST") {
+            let body = "";
+            req.on("data", chunk => {
+                body += chunk.toString();
+            });
+
+            req.on("end", () => {
+                const reservation = JSON.parse(body);
+                addReservations(reservation);
+                res.writeHead(201, { "Content-Type": "application/json" });
+                res.end(JSON.stringify(reservation));
+            });
+        } else if (req.url === "/reservations" && req.method === "GET") {
+            const reservations = getReservations();
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(reservations));
+        } else if (req.url.startsWith("/reservations/") && req.url.endsWith("/confirm") && req.method === "POST") {
+            const reservationId = req.url.split("/")[2];
+            confirmReservation(reservationId);
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ message: "Reservation confirmed" }));
+        } else if (req.url === "/admin.css" && req.method === "GET") {
+            const css = fs.readFileSync("./static/styles/admin.css", "utf8");
+            res.writeHead(200, { "Content-Type": "text/css" });
+            res.end(css);
         }
         else {
             const html = fs.readFileSync("./static/404.html", "utf8");

@@ -1,0 +1,29 @@
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+header nav a {
+    color: #fff;
+    margin-right: 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+section {
+    padding: 20px;
+    margin: 100px auto;
+    border: 1px solid #ccc;
+    max-width: 800px;
+    border-radius: 8px;
+    display: none;
+}
+section.active {
+    display: block;
+}
+#header a {
+    text-decoration: none;
+    color: #333;
+}
