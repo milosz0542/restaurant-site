@@ -1,12 +1,12 @@
 {
   "name": "restaurant-site",
   "version": "1.0.0",
-  "description": "",
+  "description": "restaurant site using node.js and sql.js for PAI classes at University of Wrocław",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "fs": "^0.0.1-security",
     "sql.js": "^1.12.0"
