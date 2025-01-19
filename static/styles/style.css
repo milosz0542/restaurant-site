@@ -154,7 +154,7 @@ body {
     text-align: center;
 }
 
-.header h1, p {
+.header h1, .header p {
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
     color: white;

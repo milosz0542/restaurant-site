@@ -26,10 +26,11 @@ $ npm start
 - [X] Frontend
 - [X] Filtering dishes by category
 - [X] Adding new dishes
-- [ ] Booking system
+- [X] Booking system
 
 ## Status
-Project is: _in progress_
+Project is: _finished_ <br>
+In the future, I would like to add authentication system, and better design.
 
 ## Usage
 To use this project, you need to have node.js installed. <br>

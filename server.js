@@ -55,7 +55,7 @@ initSqlJs().then(SQL => {
     }
 
     function addReservations(reservation) {
-        const query = `INSERT INTO Reservations (Name, Email, PhoneNumber, ReservationDate, ReservationHour, NumberOfPeople) VALUES ('${reservation.name}', '${reservation.email}', '${reservation.phone}', '${reservation.date}', '${reservation.time}', ${reservation.guests})`;
+        const query = `INSERT INTO Reservations (Name, Email, PhoneNumber, ReservationDate, ReservationHour, NumberOfPeople) VALUES ('${reservation.name}', '${reservation.email}', '${reservation.phone}', '${reservation.date}', '${reservation.time}', ${reservation.people})`;
         db.run(query);
         const data = db.export();
         const buffer = Buffer.from(data);
@@ -63,7 +63,7 @@ initSqlJs().then(SQL => {
     }
 
     function confirmReservation(reservationId) {
-        const query = `UPDATE Reservations SET Confirmed = 1 WHERE id = ${reservationId}`;
+        const query = `UPDATE Reservations SET Confirmed = 1 WHERE ID = ${reservationId}`;
         db.run(query);
         const data = db.export();
         const buffer = Buffer.from(data);

@@ -51,7 +51,7 @@
                         <label for="name">Nazwa:</label>
                         <input type="text" id="name" name="name" required>
                         <label for="price">Cena:</label>
-                        <input type="number" id="price" name="price" required>
+                        <input type="number" id="price" name="price" step="0.01" required>
                         <label for="description">Opis (składniki):</label>
                         <textarea id="description" name="description" required></textarea>
                         <label for="category">Kategoria:</label>
@@ -138,7 +138,7 @@
             .then(response => response.json())
             .then(reservations => {
                 const reservationsDiv = document.getElementById("reservations");
-                reservationsDiv.innerHTML = ""; // Clear loading text
+                reservationsDiv.innerHTML = "";
 
                 if (reservations.length === 0) {
                     reservationsDiv.textContent = "No reservations available.";
@@ -149,13 +149,13 @@
                     const reservationDiv = document.createElement("div");
                     reservationDiv.classList.add("reservation");
                     reservationDiv.innerHTML = `
-                        <div class="reservation-header">
-                            <h3>${reservation.name}</h3>
-                            <p class="date">${reservation.date}</p>
-                            <p class="confirmed">${reservation.confirmed ? "Confirmed" : "Not Confirmed"}</p>
-                            <button onclick="confirmReservation(${reservation.id})">Confirm</button>
-                        </div>
-                    `;
+                <div class="reservation-header">
+                    <h3>${reservation.Name}</h3>
+                    <p class="date">${reservation.ReservationDate}</p>
+                    <p class="confirmed">${reservation.Confirmed ? "Confirmed" : "Not Confirmed"}</p>
+                    <button onclick="confirmReservation(${reservation.ID})">Confirm</button>
+                </div>
+            `;
                     reservationsDiv.appendChild(reservationDiv);
                 });
             })
